@@ -36,7 +36,7 @@ env.Append(CPPPATH = ['src/include/ext/StreamBenchmark']) # Extension: Stream be
 
 # Customize build settings based on architecture and OS
 if hostos == 'linux': # gcc
-    env.Append(CPPFLAGS = ' -Wall -Wno-unused-but-set-variable -Wno-unused-variable -g -O3 -std=c++11 -fabi-version=6')
+    env.Append(CPPFLAGS = ' -Wall -Wno-unused-but-set-variable -Wno-unused-variable -O2 -ftree-vectorize -std=c++11 -fabi-version=15')
     env.Append(LIBS = ['pthread'])
 
     if arch == 'x64_avx': 
@@ -68,11 +68,12 @@ if hostos == 'linux': # gcc
     elif arch == 'arm_neon': # Cross-compile for 32-bit ARM w/ NEON vector extensions on 64-bit x86-64 platform
         env.Replace(CXX = 'arm-linux-gnueabihf-g++-4.8') # Cross-compiler
         env.Append(CPPFLAGS = ' -mfloat-abi=hard -mfpu=vfpv3 -mfpu=neon')
-    elif arch == 'arm64': # Cross-compile for 64-bit ARM on 64-bit x86-64 platform
-        env.Replace(CXX = 'arm-linux-gnueabihf-g++-4.8') # Cross-compiler
-        env.Append(CPPFLAGS = ' -mfloat-abi=hard -mfpu=vfpv3 -mfpu=neon -march=armv8-a')
+    elif arch == 'arm64': # Native-compile for 64-bit ARM
+        env.Append(CPPFLAGS = ' -march=armv8-a')
+        print(env['CXX'])
+        print(env['CPPFLAGS'])
     else:
-        print 'Error: architecture ' + arch + ' not supported on ' + hostos + ', cannot build.'
+        print ('Error: architecture ' + arch + ' not supported on ' + hostos + ', cannot build.')
         exit(1)
 
     # List all C++ source files
@@ -148,10 +149,10 @@ elif hostos == 'windows': # Windows OS
         ]
 
     else:
-        print 'Error: architecture ' + arch + ' not supported on ' + hostos + ', cannot build.'
+        print ('Error: architecture ' + arch + ' not supported on ' + hostos + ', cannot build.')
         exit(1)
 else:
-    print 'Error: host OS ' + hostos + ' not supported, cannot build.'
+    print ('Error: host OS ' + hostos + ' not supported, cannot build.')
     exit(1)
 
 # Do the build!

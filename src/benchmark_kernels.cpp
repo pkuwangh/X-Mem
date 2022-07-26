@@ -133,10 +133,10 @@ ret = scratchptr[0];
 
 #if defined(ARCH_ARM) && (defined(ARCH_ARM_NEON) || defined(HAS_WORD_128))
 #define my_32b_set_128b_word(a, b) vcombine_u32(a, b)
-#define my_64b_set_128b_word(a, b) vcombine_u64(a, b)
+#define my_64b_set_128b_word(a, b) vcombine_u64(reinterpret_cast<uint64x1_t>(a), reinterpret_cast<uint64x1_t>(b))
 
 #define my_32b_extractLSB_128b(w) static_cast<uint32_t>(vget_low_u64(w)) //NEON intrinsic, corresponds to "vmov" instruction. Header: arm_neon.h
-#define my_64b_extractLSB_128b(w) vget_low_u64(w) //NEON intrinsic, corresponds to "vmov" instruction. Header: arm_neon.h
+#define my_64b_extractLSB_128b(w) reinterpret_cast<uint64_t>(vget_low_u64(w)) //NEON intrinsic, corresponds to "vmov" instruction. Header: arm_neon.h
 #endif
 
 #if defined(HAS_WORD_512) && defined(ARCH_INTEL_MIC)

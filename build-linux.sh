@@ -50,7 +50,7 @@ scons arch=$ARCH -j$NUM_THREADS
 # Check if build was successful
 if [[ $? -eq 0 ]]; then
     # Copy executable
-    mkdir bin
+    mkdir -p bin
     cp build/linux/$ARCH/release/xmem bin/xmem-linux-$ARCH
     echo Done! The executable xmem is at bin/xmem-linux-$ARCH
     exit 0

@@ -35,6 +35,7 @@
 
 //Libraries
 #include <iostream>
+#include <limits>
 #include <vector> //for std::vector
 
 #ifdef _WIN32

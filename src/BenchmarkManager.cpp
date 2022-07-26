@@ -92,7 +92,7 @@ BenchmarkManager::BenchmarkManager(
     {
     //Set up DRAM power measurement
     for (uint32_t i = 0; i < g_num_physical_packages; i++) { //FIXME: this assumes that each physical package has a DRAM power measurement capability
-        std::string power_obj_name = static_cast<std::ostringstream*>(&(std::ostringstream() << "Socket " << i << " DRAM"))->str();
+        std::string power_obj_name = "Socket " + std::to_string(i) + " DRAM";
         
 #ifdef _WIN32
 #ifndef ARCH_ARM //lacking library support for Windows on ARM
@@ -592,7 +592,7 @@ bool BenchmarkManager::buildBenchmarks() {
                             int32_t stride = strides[stride_index];
                             
                             //Add the throughput benchmark
-                            benchmark_name = static_cast<std::ostringstream*>(&(std::ostringstream() << "Test #" << g_test_index << "T (Throughput)"))->str();
+                            benchmark_name = "Test #" + std::to_string(g_test_index) + "T (Throughput)";
                             tp_benchmarks_.push_back(new ThroughputBenchmark(mem_array,
                                                                          mem_array_len,
                                                                          config_.getIterationsPerTest(),
@@ -614,7 +614,7 @@ bool BenchmarkManager::buildBenchmarks() {
 
                             //Special case: number of worker threads is 1, only need 1 latency thread in general to do unloaded latency tests.
                             if (config_.getNumWorkerThreads() > 1 || buildLatBench) {
-                                benchmark_name = static_cast<std::ostringstream*>(&(std::ostringstream() << "Test #" << g_test_index << "L (Latency)"))->str();
+                                benchmark_name = "Test #" + std::to_string(g_test_index) + "L (Latency)";
                                 lat_benchmarks_.push_back(new LatencyBenchmark(mem_array,
                                                                                 mem_array_len,
                                                                                 config_.getIterationsPerTest(),
@@ -652,7 +652,7 @@ bool BenchmarkManager::buildBenchmarks() {
                             continue;
                         
                         //Add the throughput benchmark
-                        benchmark_name = static_cast<std::ostringstream*>(&(std::ostringstream() << "Test #" << g_test_index << "T (Throughput)"))->str();
+                        benchmark_name = "Test #" + std::to_string(g_test_index) + "T (Throughput)";
                         tp_benchmarks_.push_back(new ThroughputBenchmark(mem_array,
                                                                           mem_array_len,
                                                                           config_.getIterationsPerTest(),
@@ -673,7 +673,7 @@ bool BenchmarkManager::buildBenchmarks() {
                         //Add the latency benchmark
                         //Special case: number of worker threads is 1, only need 1 latency thread in general to do unloaded latency tests.
                         if (config_.getNumWorkerThreads() > 1 || buildLatBench) {
-                            benchmark_name = static_cast<std::ostringstream*>(&(std::ostringstream() << "Test #" << g_test_index << "L (Latency)"))->str();
+                            benchmark_name = "Test #" + std::to_string(g_test_index) + "L (Latency)";
                             lat_benchmarks_.push_back(new LatencyBenchmark(mem_array,
                                                                             mem_array_len,
                                                                             config_.getIterationsPerTest(),
@@ -746,7 +746,7 @@ bool BenchmarkManager::runExtDelayInjectedLoadedLatencyBenchmark() {
                 uint32_t d = 0;
                 while (d <= 1024) { //Iterate different delay values
             
-                    std::string benchmark_name = static_cast<std::ostringstream*>(&(std::ostringstream() << "Test #" << g_test_index++ << "E" << EXT_NUM_DELAY_INJECTED_LOADED_LATENCY_BENCHMARK << " (Extension: Delay-Injected Loaded Latency)"))->str();
+                    std::string benchmark_name = "Test #" + std::to_string(g_test_index++) + "E" + std::to_string(EXT_NUM_DELAY_INJECTED_LOADED_LATENCY_BENCHMARK) + " (Extension: Delay-Injected Loaded Latency)";
                     
                     del_lat_benchmarks.push_back(new DelayInjectedLoadedLatencyBenchmark(mem_array,
                                                                              mem_array_len,
