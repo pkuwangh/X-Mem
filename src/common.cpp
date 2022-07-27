@@ -62,11 +62,6 @@
 #include <time.h>
 #endif
 
-#ifdef HAS_LARGE_PAGES
-extern "C" {
-#include <hugetlbfs.h> //for getting huge page size
-}
-#endif
 #endif
 
 namespace xmem {
@@ -644,7 +639,8 @@ int32_t xmem::query_sys_info() {
 #ifdef __gnu_linux__
     g_page_size = static_cast<size_t>(sysconf(_SC_PAGESIZE));
 #ifdef HAS_LARGE_PAGES
-    g_large_page_size = gethugepagesize(); 
+    // g_large_page_size = gethugepagesize();
+    g_large_page_size = DEFAULT_LARGE_PAGE_SIZE;
 #endif
     in.close();
 #endif

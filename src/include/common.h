@@ -194,6 +194,7 @@ namespace xmem {
 #define ARCH_ARM_64
 #define ARCH_ARM_VFP_V4 //FIXME: this is assumed, as I don't know how to check directly
 #define ARCH_64BIT
+#define HAS_LARGE_PAGES
 #endif
 
 #ifdef __ARM_ARCH_7__ //ARMv7

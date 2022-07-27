@@ -65,9 +65,7 @@
 #include <numa.h>
 #endif
 #ifdef HAS_LARGE_PAGES
-extern "C" {
-#include <hugetlbfs.h> //for allocating and freeing huge pages
-}
+#include <sys/mman.h>
 #endif
 #endif
 
@@ -156,7 +154,8 @@ BenchmarkManager::~BenchmarkManager() {
 #ifdef __gnu_linux__
 #ifdef HAS_LARGE_PAGES
             if (config_.useLargePages())
-                free_huge_pages(mem_arrays_[i]);
+                // free_huge_pages(mem_arrays_[i]);
+                munmap(mem_arrays_[i], mem_array_lens_[i]);
             else
 #endif
 #ifdef HAS_NUMA
@@ -456,7 +455,8 @@ void BenchmarkManager::setupWorkingSets(size_t working_set_size) {
             mem_arrays_[numa_node] = VirtualAllocExNuma(GetCurrentProcess(), NULL, allocation_size, MEM_COMMIT | MEM_RESERVE | MEM_LARGE_PAGES, PAGE_READWRITE, numa_node); //Windows NUMA allocation. Make the allocation one page bigger than necessary so that we can do alignment.
 #endif
 #ifdef __gnu_linux__
-            mem_arrays_[numa_node] = get_huge_pages(allocation_size, GHP_DEFAULT); 
+            // mem_arrays_[numa_node] = get_huge_pages(allocation_size, GHP_DEFAULT);
+            mem_arrays_[numa_node] = mmap(0x0, allocation_size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB, 0, 0);
 #endif
         } else { //Non-large pages (nominal case)
 #endif
