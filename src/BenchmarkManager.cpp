@@ -456,7 +456,7 @@ void BenchmarkManager::setupWorkingSets(size_t working_set_size) {
 #endif
 #ifdef __gnu_linux__
             // mem_arrays_[numa_node] = get_huge_pages(allocation_size, GHP_DEFAULT);
-            mem_arrays_[numa_node] = mmap(0x0, allocation_size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB, 0, 0);
+            mem_arrays_[numa_node] = mmap(0x0, allocation_size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB | (30 << MAP_HUGE_SHIFT), 0, 0);
 #endif
         } else { //Non-large pages (nominal case)
 #endif
